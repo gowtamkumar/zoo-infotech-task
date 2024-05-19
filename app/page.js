@@ -27,13 +27,13 @@ export default function Home() {
       <div className="container mx-auto mt-6 px-4">
         <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
           <div className="flex mb-6 md:w-1/4  gap-1 ">
-            <div className="flex-1 bg-gray-300 p-4 text-center text-white rounded-tr-lg  rounded-tl-lg cursor-pointer">
+            <div className="flex-1 bg-gray-300 p-2 text-center text-white rounded-tr-lg  rounded-tl-lg cursor-pointer">
               One Way
             </div>
-            <div className="flex-1 bg-gray-300 p-4 text-center text-white rounded-tr-lg  rounded-tl-lg cursor-pointer">
+            <div className="flex-1 bg-gray-300 p-2 text-center text-white rounded-tr-lg  rounded-tl-lg cursor-pointer">
               Round Trip
             </div>
-            <div className="flex-1 bg-gray-300 p-4 text-center text-white rounded-tr-lg  rounded-tl-lg cursor-pointer">
+            <div className="flex-1 bg-gray-300 p-2 text-center text-white rounded-tr-lg  rounded-tl-lg cursor-pointer">
               Multi-city
             </div>
           </div>
@@ -99,20 +99,20 @@ export default function Home() {
 
       <div className="bg-blue-900 text-white text-center">
         <div className="bg-blue-950 p-3">19 May, 2024 | DAC ✈ DXB</div>
-        <div className="container mx-auto md:mt-6 px-4">
-          <div className="flex justify-between">
-            <div className="flex md:p-4 text-center border-white md:gap-2   justify-center items-center">
-              <FaCheckCircle />
+        <div className="container mx-auto p-2">
+          <div className="flex justify-between items-center">
+            <div className="flex text-center border-white md:gap-2   justify-center items-center">
+              <FaCheckCircle className="text-orange-500" />
               <span>SEARCH RESULTS</span>
             </div>
 
-            <div className="flex md:p-4 text-center border-white md:gap-2  justify-center items-center">
-              <FaRegCircleCheck />
+            <div className="flex text-center border-white md:gap-2  justify-center items-center">
+              <FaRegCircleCheck className="text-orange-500" />
               <span>PASSENGER DETAILS</span>
             </div>
 
-            <div className="flex md:p-4 text-center border-white md:gap-2  justify-center items-center">
-              <FaRegCircleCheck />
+            <div className="flex text-center border-white md:gap-2  justify-center items-center">
+              <FaRegCircleCheck className="text-orange-500" />
               <span>BOOKING CONFIRMATION</span>
             </div>
           </div>
@@ -197,27 +197,131 @@ export default function Home() {
           <div className="md:w-3/4 sm:w-1/2">
             {[1, 3, 4, 5, 6, 6, 78, 3].map((item, idx) => {
               return (
-                <div key={idx}>
-                  <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
-                    <div className="flex justify-between mb-4">
-                      <div>
-                        <div>Sunday, May 19</div>
-                        <div>21:55</div>
-                        <div>DAC ✈ DXB</div>
-                        <div>Flight Duration: 5h 30m</div>
+                <div
+                  className="bg-white  rounded-lg shadow-md  border-2"
+                  key={idx}
+                >
+                  <div className="md:flex justify-between ">
+                    <div className="md:w-5/6 border-r px-2">
+                      <div className="flex items-center mb-4">
+                        <div className="w-1/2">Sunday, May 19</div>
+                        <div className="w-1/2">
+                          <span>DAC</span>
+                          <span className="mx-2">✈</span>
+                          <span>DXB</span>
+                        </div>
                       </div>
-                      <div>
-                        <div>Cabin: Economy</div>
-                        <div>Seats: Available</div>
-                        <div>Stop: Non Stop</div>
+
+                      <div className="flex justify-between items-center mb-4">
+                        <div>
+                          <Image
+                            src="/BS.gif"
+                            width={40}
+                            height={40}
+                            alt="Picture of the author"
+                          />
+
+                          <p class="text-gray-600">BS (341)</p>
+                          <p class="text-gray-600">US Bangla</p>
+                        </div>
+                        <div>
+                          <p className="text-xl font-semibold">21:55</p>
+                          <p className="text-gray-600">DAC</p>
+                        </div>
+                        <div className="text-center grid grid-cols-2 gap-1">
+                          <div className="border-2 px-2 py-1 rounded-md text-xs ml-2">
+                            Non Stop
+                          </div>
+                          <div className="border-2 px-2 py-1 rounded-md text-xs ml-2">
+                            Economy
+                          </div>
+                          <div className="border-2 px-2 py-1 rounded-md text-xs ml-2">
+                            Refundable
+                          </div>
+                          <div className="border-2 px-2 py-1 rounded-md text-xs ml-2">
+                            Refundable
+                          </div>
+                        </div>
+                        <div>
+                          <p className="text-xl font-semibold">01:25</p>
+                          <p className="text-gray-600">DXB</p>
+                        </div>
                       </div>
-                      <div>
-                        <div>Price: BDT 40231</div>
+                    </div>
+
+                    <div className="md:w-1/4 md:flex justify-center items-center">
+                      <div className="text-center">
+                        <p className="text-sm text-gray-600">7.00 % Discount</p>
+                        <p className="text-gray-600">
+                          BDT <span className="line-through">33826</span>
+                        </p>
+                        <p className="text-xl font-bold text-red-600">
+                          BDT 31486
+                        </p>
+
+                        <div className="mt-4">
+                          <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded">
+                            Book Now
+                          </button>
+                        </div>
                       </div>
-                      <div>
-                        <button className="bg-orange-500 text-white px-4 py-2 rounded-md">
-                          Book Now
+                    </div>
+                  </div>
+                  <div className="bg-[#f5f5f5] mt-2 md:flex justify-between p-2">
+                    <div
+                      id="accordion-collapse"
+                      className="flex-1"
+                      data-accordion="collapse"
+                    >
+                      <h2 id="accordion-collapse-heading-1">
+                        <button
+                          type="button"
+                          class=" w-full p-1 font-medium rtl:text-right text-gray-500"
+                          // data-accordion-target="#accordion-collapse-body-1"
+                          aria-expanded="true"
+                          aria-controls="accordion-collapse-body-1"
+                        >
+                          <div className="flex items-center justify-between">
+                            <div>left</div>
+                            <div className="flex items-center justify-center gap-1">
+                              Flight Details
+                              <svg
+                                data-accordion-icon
+                                class="w-3 h-3 rotate-180 shrink-0"
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 10 6"
+                              >
+                                <path
+                                  stroke="currentColor"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="2"
+                                  d="M9 5 5 1 1 5"
+                                />
+                              </svg>
+                            </div>
+                          </div>
                         </button>
+                      </h2>
+                      <div
+                        id="accordion-collapse-body-1"
+                        class="block"
+                        aria-labelledby="accordion-collapse-heading-1"
+                      >
+                        <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700 dark:bg-gray-900">
+                          <p class="mb-2 text-gray-500 dark:text-gray-400">
+                            open-source library of interactive components built
+                            on top of Tailwind CSS including buttons, dropdowns,
+                            modals, navbars, and more.
+                          </p>
+                          <p class="text-gray-500 dark:text-gray-400">
+                            Check out this guide to learn how to and start
+                            developing websites even faster with components on
+                            top of Tailwind CSS.
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
