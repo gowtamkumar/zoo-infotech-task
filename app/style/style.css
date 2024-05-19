@@ -1,0 +1,142 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  margin: 0;
+  padding: 0;
+}
+.header {
+  background-color: #2f496e;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+.container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 0 20px;
+}
+.search-box {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+.tabs {
+  display: flex;
+  margin-bottom: 20px;
+}
+.tab {
+  flex: 1;
+  background-color: #d9d9d9;
+  padding: 10px;
+  text-align: center;
+  color: white;
+  border-radius: 5px 5px 0 0;
+  cursor: pointer;
+  margin-right: 5px;
+}
+.tab.active {
+  background-color: #ff8c42;
+}
+.form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.form-group label {
+  margin-bottom: 5px;
+}
+.form-group input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.search-button {
+  background-color: #ff8c42;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+  align-self: flex-end;
+}
+.results-header {
+  background-color: #2f496e;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.steps {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+.step {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  border-right: 1px solid white;
+}
+.step:last-child {
+  border-right: none;
+}
+.step.active {
+  background-color: #ff8c42;
+}
+.row {
+  display: flex;
+}
+.filter-section {
+  width: 25%;
+  padding-right: 20px;
+}
+.results-section {
+  width: 75%;
+}
+.filter-group {
+  margin-bottom: 20px;
+}
+.filter-group label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.filter-group input {
+  margin-right: 5px;
+}
+.flight-card {
+  background-color: white;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.flight-card .row {
+  display: flex;
+  justify-content: space-between;
+}
+.flight-card .row div {
+  flex: 1;
+}
+.book-now {
+  background-color: #ff8c42;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.footer {
+  background-color: #2f496e;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  margin-top: 20px;
+}
