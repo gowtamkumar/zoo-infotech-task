@@ -1,12 +1,14 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
-import { FaCheckCircle } from "react-icons/fa";
+import { FaCheckCircle, FaMailBulk, FaWhatsapp } from "react-icons/fa";
 import { FaRegCircleCheck } from "react-icons/fa6";
 import jsonData from "@/public/zoo-flight-search.json";
+import { MdOutlineMail } from "react-icons/md";
 
 export default function Home() {
   const [fromValue, setFromvalue] = useState({});
+  const [flightDetails, setflightDetails] = useState({});
   const HandleSearch = (v) => {
     // const newData = { ...fromValue };
     // console.log("working...", v.target);
@@ -16,7 +18,7 @@ export default function Home() {
     // v.preventDefault();
   };
 
-  console.log("data", jsonData.result);
+  console.log("data", flightDetails);
 
   return (
     <main className="bg-gray-100 font-sans">
@@ -195,13 +197,13 @@ export default function Home() {
           </div>
 
           <div className="md:w-3/4 sm:w-1/2">
-            {[1, 3, 4, 5, 6, 6, 78, 3].map((item, idx) => {
+            {[1, 3, 4, 5, 6, 78, 3].map((item, idx) => {
               return (
                 <div
-                  className="bg-white  rounded-lg shadow-md  border-2"
+                  className="bg-white  rounded-lg shadow-md  border-b-8"
                   key={idx}
                 >
-                  <div className="md:flex justify-between ">
+                  <div className="md:flex justify-between text-xs">
                     <div className="md:w-5/6 border-r px-2">
                       <div className="flex items-center mb-4">
                         <div className="w-1/2">Sunday, May 19</div>
@@ -221,8 +223,8 @@ export default function Home() {
                             alt="Picture of the author"
                           />
 
-                          <p class="text-gray-600">BS (341)</p>
-                          <p class="text-gray-600">US Bangla</p>
+                          <p className="text-gray-600">BS (341)</p>
+                          <p className="text-gray-600">US Bangla</p>
                         </div>
                         <div>
                           <p className="text-xl font-semibold">21:55</p>
@@ -267,27 +269,30 @@ export default function Home() {
                       </div>
                     </div>
                   </div>
-                  <div className="bg-[#f5f5f5] mt-2 md:flex justify-between p-2">
+                  <div className="bg-[#f5f5f5] mt-2 md:flex justify-between p-2 text-xs">
                     <div
                       id="accordion-collapse"
                       className="flex-1"
                       data-accordion="collapse"
                     >
-                      <h2 id="accordion-collapse-heading-1">
+                      <h2>
                         <button
                           type="button"
-                          class=" w-full p-1 font-medium rtl:text-right text-gray-500"
-                          // data-accordion-target="#accordion-collapse-body-1"
-                          aria-expanded="true"
-                          aria-controls="accordion-collapse-body-1"
+                          className=" w-full p-1 font-medium rtl:text-right text-gray-500"
+                          onClick={() =>
+                            setflightDetails({ idx, open: !flightDetails.open })
+                          }
                         >
                           <div className="flex items-center justify-between">
-                            <div>left</div>
+                            <div className="flex gap-1">
+                              Send Query :<FaWhatsapp />
+                              <MdOutlineMail />
+                            </div>
                             <div className="flex items-center justify-center gap-1">
                               Flight Details
                               <svg
                                 data-accordion-icon
-                                class="w-3 h-3 rotate-180 shrink-0"
+                                className="w-3 h-3 rotate-180 shrink-0"
                                 aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
@@ -295,9 +300,9 @@ export default function Home() {
                               >
                                 <path
                                   stroke="currentColor"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth="2"
                                   d="M9 5 5 1 1 5"
                                 />
                               </svg>
@@ -306,21 +311,65 @@ export default function Home() {
                         </button>
                       </h2>
                       <div
-                        id="accordion-collapse-body-1"
-                        class="block"
-                        aria-labelledby="accordion-collapse-heading-1"
+                        className={`${
+                          flightDetails.idx === idx && flightDetails.open
+                            ? "block"
+                            : "hidden"
+                        }`}
                       >
-                        <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700 dark:bg-gray-900">
-                          <p class="mb-2 text-gray-500 dark:text-gray-400">
-                            open-source library of interactive components built
-                            on top of Tailwind CSS including buttons, dropdowns,
-                            modals, navbars, and more.
-                          </p>
-                          <p class="text-gray-500 dark:text-gray-400">
-                            Check out this guide to learn how to and start
-                            developing websites even faster with components on
-                            top of Tailwind CSS.
-                          </p>
+                        <div className=" border-gray-200 dark:border-gray-700 dark:bg-gray-900">
+                          <div className="border-b">
+                            <div className="w-1/4 bg-[#0A3D62] text-white text-center p-1">
+                              <span className="text-xs">DAC</span>
+                              <span className="mx-2">✈</span>
+                              <span className="text-xs">DXB</span>
+                            </div>
+                          </div>
+                          {[1, 2].map((item) => {
+                            return (
+                              <>
+                                <div className="flex justify-between items-center border-b-2">
+                                  <div>
+                                    <Image
+                                      src="/BS.gif"
+                                      width={40}
+                                      height={40}
+                                      alt="Picture of the author"
+                                    />
+                                  </div>
+                                  <div>
+                                    <p>BS</p>
+                                    <p>Aircraft: 341</p>
+                                  </div>
+                                  <div>
+                                    <p>2024-05-20 21:55:00</p>
+                                    <p>DAC</p>
+                                  </div>
+                                  <div>
+                                    <div className="border-2 px-2 py-1 rounded-md text-xs ml-2">
+                                      Economy
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <p>2024-05-20 21:55:00</p>
+                                    <p>DAC</p>
+                                    <div>
+                                      <p>Available Seat : 1</p>
+                                      <p>Cabin: Y ( rbd: H)</p>
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <p>UK</p>
+                                    <p>184</p>
+                                    <div>
+                                      <p>Baggage</p>
+                                      <p>1 Pcs</p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </>
+                            );
+                          })}
                         </div>
                       </div>
                     </div>
