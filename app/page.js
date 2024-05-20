@@ -1,24 +1,41 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useActionState, useFormStatus } from "react";
 import { FaCheckCircle, FaMailBulk, FaWhatsapp } from "react-icons/fa";
 import { FaRegCircleCheck } from "react-icons/fa6";
 import jsonData from "@/public/zoo-flight-search.json";
 import { MdOutlineMail } from "react-icons/md";
 
 export default function Home() {
-  const [fromValue, setFromvalue] = useState({});
-  const [flightDetails, setflightDetails] = useState({});
-  const HandleSearch = (v) => {
-    // const newData = { ...fromValue };
-    // console.log("working...", v.target);
-    // newData[v.target.name] = v.target.value;
-    // console.log("🚀 ~ newData:", newData);
-    // setFromvalue(newData)
-    // v.preventDefault();
+  const [fromValue, setFromvalue] = useState({
+    departing: "2024-06-01",
+    flyingFrom: "DAC",
+    flyingTo: "DXB",
+    travelers: "1 Passenger, Economy",
+  });
+  const [show, setshow] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
+
+  const HandleSearch = () => {
+    const filterData = jsonData.result.filter(
+      (item) =>
+        item.legs[0].segment.departureLocation.toLowerCase() ===
+          fromValue.flyingFrom.toLowerCase() &&
+        item.legs[0].segment.arrivalLocation.toLowerCase() ===
+          fromValue.flyingTo.toLowerCase() &&
+        item.legs[0].segment.departureDate === fromValue.departing
+    );
+    setLoading(true);
+    setTimeout(() => {
+      setData(filterData);
+      setLoading(false);
+    }, 500);
+
+    // console.log("🚀 ~ filterData:", filterData)
   };
 
-  console.log("data", flightDetails);
+  console.log("working...", jsonData);
 
   return (
     <main className="bg-gray-100 font-sans">
@@ -39,63 +56,76 @@ export default function Home() {
               Multi-city
             </div>
           </div>
-          <form className="space-y-4" action={HandleSearch}>
-            <div className="grid md:grid-cols-5 gap-4">
-              <div>
-                <label htmlFor="from" className="block mb-2">
-                  Flying from
-                </label>
-                <input
-                  type="text"
-                  name="flyingFrom"
-                  id="from"
-                  defaultValue="DAC"
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                />
-              </div>
-              <div>
-                <label htmlFor="to" className="block mb-2">
-                  Flying to
-                </label>
-                <input
-                  type="text"
-                  name="flyingTo"
-                  id="to"
-                  defaultValue="DXB"
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                />
-              </div>
-              <div>
-                <label htmlFor="date" className="block mb-2">
-                  Departing
-                </label>
-                <input
-                  type="date"
-                  name="departing"
-                  id="date"
-                  defaultValue="2024-05-19"
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                />
-              </div>
-              <div>
-                <label htmlFor="travelers" className="block mb-2">
-                  Travelers
-                </label>
-                <input
-                  type="text"
-                  id="travelers"
-                  defaultValue="1 Passenger, Economy"
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                />
-              </div>
-              <button
-                type="submit"
-                className="bg-orange-500 text-white  rounded-md mt-7"
-              >
-                Modify Search
-              </button>
+          <div className="grid md:grid-cols-5 gap-4">
+            <div>
+              <label htmlFor="from" className="block mb-2">
+                Flying from
+              </label>
+              <input
+                type="text"
+                name="flyingFrom"
+                onChange={(v) =>
+                  setFromvalue({ ...fromValue, flyingFrom: v.target.value })
+                }
+                id="from"
+                defaultValue={fromValue.flyingFrom}
+                className="w-full p-2 border border-gray-300 rounded-md"
+              />
             </div>
-          </form>
+            <div>
+              <label htmlFor="to" className="block mb-2">
+                Flying to
+              </label>
+              <input
+                type="text"
+                name="flyingTo"
+                onChange={(v) =>
+                  setFromvalue({ ...fromValue, flyingTo: v.target.value })
+                }
+                id="to"
+                defaultValue={fromValue.flyingTo}
+                className="w-full p-2 border border-gray-300 rounded-md"
+              />
+            </div>
+            <div>
+              <label htmlFor="date" className="block mb-2">
+                Departing
+              </label>
+              <input
+                type="date"
+                name="departing"
+                onChange={(v) =>
+                  setFromvalue({ ...fromValue, departing: v.target.value })
+                }
+                id="date"
+                defaultValue={fromValue.departing}
+                className="w-full p-2 border border-gray-300 rounded-md"
+              />
+            </div>
+            <div>
+              <label htmlFor="travelers" className="block mb-2">
+                Travelers
+              </label>
+              <input
+                type="text"
+                id="travelers"
+                name="travelers"
+                onChange={(v) =>
+                  setFromvalue({ ...fromValue, travelers: v.target.value })
+                }
+                defaultValue={fromValue.travelers}
+                className="w-full p-2 border border-gray-300 rounded-md"
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={loading}
+              onClick={HandleSearch}
+              className="bg-orange-500 text-white  rounded-md mt-7"
+            >
+              Modify Search
+            </button>
+          </div>
         </div>
       </div>
 
@@ -197,7 +227,16 @@ export default function Home() {
           </div>
 
           <div className="md:w-3/4 sm:w-1/2">
-            {[1, 3, 4, 5, 6, 78, 3].map((item, idx) => {
+            {loading && "loading...."}
+
+            {/* {!data.length ? "search something" : ""} */}
+
+            {data.map((item, idx) => {
+              const lastElementSegmentDetails =
+                item.legs[0].segmentDetails[
+                  item.legs[0].segmentDetails.length - 1
+                ];
+
               return (
                 <div
                   className="bg-white  rounded-lg shadow-md  border-b-8"
@@ -227,7 +266,9 @@ export default function Home() {
                           <p className="text-gray-600">US Bangla</p>
                         </div>
                         <div>
-                          <p className="text-xl font-semibold">21:55</p>
+                          <p className="text-xl font-semibold">
+                            {item.legs[0].segmentDetails[0].origin.dateTime}
+                          </p>
                           <p className="text-gray-600">DAC</p>
                         </div>
                         <div className="text-center grid grid-cols-2 gap-1">
@@ -245,7 +286,9 @@ export default function Home() {
                           </div>
                         </div>
                         <div>
-                          <p className="text-xl font-semibold">01:25</p>
+                          <p className="text-xl font-semibold">
+                            {lastElementSegmentDetails.destination.dateTime}
+                          </p>
                           <p className="text-gray-600">DXB</p>
                         </div>
                       </div>
@@ -253,12 +296,13 @@ export default function Home() {
 
                     <div className="md:w-1/4 md:flex justify-center items-center">
                       <div className="text-center">
-                        <p className="text-sm text-gray-600">7.00 % Discount</p>
-                        <p className="text-gray-600">
-                          BDT <span className="line-through">33826</span>
-                        </p>
+                        <p className="text-sm text-gray-600">{item.priceBreakDownWithMarkup.commission_percentage} % Discount</p>
+                       
                         <p className="text-xl font-bold text-red-600">
-                          BDT 31486
+                          BDT {item.priceBreakDownWithMarkup.totalFare.netTotalFareAmount}
+                        </p>
+                        <p className="text-gray-600">
+                          BDT <span className="line-through">{item.totalPrice.totalPrice}</span>
                         </p>
 
                         <div className="mt-4">
@@ -279,9 +323,7 @@ export default function Home() {
                         <button
                           type="button"
                           className=" w-full p-1 font-medium rtl:text-right text-gray-500"
-                          onClick={() =>
-                            setflightDetails({ idx, open: !flightDetails.open })
-                          }
+                          onClick={() => setshow({ idx, open: !show.open })}
                         >
                           <div className="flex items-center justify-between">
                             <div className="flex gap-1">
@@ -312,9 +354,7 @@ export default function Home() {
                       </h2>
                       <div
                         className={`${
-                          flightDetails.idx === idx && flightDetails.open
-                            ? "block"
-                            : "hidden"
+                          show.idx === idx && show.open ? "block" : "hidden"
                         }`}
                       >
                         <div className=" border-gray-200 dark:border-gray-700 dark:bg-gray-900">
@@ -325,49 +365,50 @@ export default function Home() {
                               <span className="text-xs">DXB</span>
                             </div>
                           </div>
-                          {[1, 2].map((item) => {
+                          {item.legs[0].segmentDetails?.map((item1, idx1) => {
                             return (
-                              <>
-                                <div className="flex justify-between items-center border-b-2">
-                                  <div>
-                                    <Image
-                                      src="/BS.gif"
-                                      width={40}
-                                      height={40}
-                                      alt="Picture of the author"
-                                    />
-                                  </div>
-                                  <div>
-                                    <p>BS</p>
-                                    <p>Aircraft: 341</p>
-                                  </div>
-                                  <div>
-                                    <p>2024-05-20 21:55:00</p>
-                                    <p>DAC</p>
-                                  </div>
-                                  <div>
-                                    <div className="border-2 px-2 py-1 rounded-md text-xs ml-2">
-                                      Economy
-                                    </div>
-                                  </div>
-                                  <div>
-                                    <p>2024-05-20 21:55:00</p>
-                                    <p>DAC</p>
-                                    <div>
-                                      <p>Available Seat : 1</p>
-                                      <p>Cabin: Y ( rbd: H)</p>
-                                    </div>
-                                  </div>
-                                  <div>
-                                    <p>UK</p>
-                                    <p>184</p>
-                                    <div>
-                                      <p>Baggage</p>
-                                      <p>1 Pcs</p>
-                                    </div>
+                              <div
+                                className="flex justify-between items-center border-b-2"
+                                key={idx1}
+                              >
+                                <div>
+                                  <Image
+                                    src="/BS.gif"
+                                    width={40}
+                                    height={40}
+                                    alt="Picture of the author"
+                                  />
+                                </div>
+                                <div>
+                                  <p>{item1.fleet?.operating}</p>
+                                  <p>Aircraft: {item1.fleet?.operatingFlightNumber}</p>
+                                </div>
+                                <div>
+                                  <p>{item1.origin.dateTime}</p>
+                                  <p>{item1.origin.city}</p>
+                                </div>
+                                <div>
+                                  <div className="border-2 px-2 py-1 rounded-md text-xs ml-2">
+                                    Economy
                                   </div>
                                 </div>
-                              </>
+                                <div>
+                                  <p>{item1.destination.dateTime}</p>
+                                  <p>{item1.destination.city}</p>
+                                  <div>
+                                    <p>Available Seat : 1</p>
+                                    <p>Cabin: Y ( rbd: H)</p>
+                                  </div>
+                                </div>
+                                <div>
+                                  <p>{item1.fleet?.operating}</p>
+                                  <p>{item1.fleet?.operatingFlightNumber}</p>
+                                  <div>
+                                    <p>Baggage</p>
+                                    <p>1 Pcs</p>
+                                  </div>
+                                </div>
+                              </div>
                             );
                           })}
                         </div>
