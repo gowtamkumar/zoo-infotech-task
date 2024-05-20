@@ -31,8 +31,6 @@ export default function Home() {
       setData(filterData);
       setLoading(false);
     }, 500);
-
-    // console.log("🚀 ~ filterData:", filterData)
   };
 
   console.log("working...", jsonData);
@@ -130,7 +128,9 @@ export default function Home() {
       </div>
 
       <div className="bg-blue-900 text-white text-center">
-        <div className="bg-blue-950 p-3">19 May, 2024 | DAC ✈ DXB</div>
+        <div className="bg-blue-950 p-3">
+          {fromValue.departing} | {fromValue.flyingFrom} ✈ {fromValue.flyingTo}
+        </div>
         <div className="container mx-auto p-2">
           <div className="flex justify-between items-center">
             <div className="flex text-center border-white md:gap-2   justify-center items-center">
@@ -163,7 +163,7 @@ export default function Home() {
                     name="stops"
                     value="nonstop"
                     className="mr-2"
-                  />{" "}
+                  />
                   Non Stop
                 </div>
                 <div>
@@ -172,7 +172,7 @@ export default function Home() {
                     name="stops"
                     value="onestop"
                     className="mr-2"
-                  />{" "}
+                  />
                   One Stop
                 </div>
                 <div>
@@ -181,14 +181,14 @@ export default function Home() {
                     name="stops"
                     value="multistop"
                     className="mr-2"
-                  />{" "}
+                  />
                   Multi Stop
                 </div>
               </div>
               <div className="mb-6">
                 <h3 className="font-bold mb-2">Cabin Type</h3>
                 <div>
-                  <input type="checkbox" value="economy" className="mr-2" />{" "}
+                  <input type="checkbox" value="economy" className="mr-2" />
                   Economy
                 </div>
                 <div>
@@ -196,11 +196,11 @@ export default function Home() {
                     type="checkbox"
                     value="premiumeconomy"
                     className="mr-2"
-                  />{" "}
+                  />
                   Premium Economy
                 </div>
                 <div>
-                  <input type="checkbox" value="business" className="mr-2" />{" "}
+                  <input type="checkbox" value="business" className="mr-2" />
                   Business
                 </div>
                 <div>
@@ -215,11 +215,11 @@ export default function Home() {
                   Bangla
                 </div>
                 <div>
-                  <input type="checkbox" value="flydubai" className="mr-2" />{" "}
+                  <input type="checkbox" value="flydubai" className="mr-2" />
                   FlyDubai
                 </div>
                 <div>
-                  <input type="checkbox" value="emirates" className="mr-2" />{" "}
+                  <input type="checkbox" value="emirates" className="mr-2" />
                   Emirates
                 </div>
               </div>
@@ -227,9 +227,7 @@ export default function Home() {
           </div>
 
           <div className="md:w-3/4 sm:w-1/2">
-            {loading && "loading...."}
-
-            {/* {!data.length ? "search something" : ""} */}
+            {loading && "Loading...."}
 
             {data.map((item, idx) => {
               const lastElementSegmentDetails =
@@ -237,19 +235,36 @@ export default function Home() {
                   item.legs[0].segmentDetails.length - 1
                 ];
 
+              function getTime(value) {
+                // const dateString = item.legs[0].segmentDetails[0].origin.dateTime;
+                const date = new Date(value);
+
+                const hours = date.getHours();
+                const minutes = date.getMinutes();
+                const seconds = date.getSeconds();
+
+                // Format the time as a string
+                const timeString = `${hours
+                  .toString()
+                  .padStart(2, "0")}:${minutes
+                  .toString()
+                  .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+                return timeString;
+              }
+
               return (
                 <div
-                  className="bg-white  rounded-lg shadow-md  border-b-8"
+                  className="bg-white rounded-lg shadow-md border-b-8"
                   key={idx}
                 >
-                  <div className="md:flex justify-between text-xs">
+                  <div className="md:flex justify-between text-xs p-1">
                     <div className="md:w-5/6 border-r px-2">
                       <div className="flex items-center mb-4">
-                        <div className="w-1/2">Sunday, May 19</div>
+                        <div className="w-1/2">{fromValue.departing}</div>
                         <div className="w-1/2">
-                          <span>DAC</span>
+                          <span>{item.legs[0].segment.departureLocation}</span>
                           <span className="mx-2">✈</span>
-                          <span>DXB</span>
+                          <span>{item.legs[0].segment.arrivalLocation}</span>
                         </div>
                       </div>
 
@@ -267,9 +282,13 @@ export default function Home() {
                         </div>
                         <div>
                           <p className="text-xl font-semibold">
-                            {item.legs[0].segmentDetails[0].origin.dateTime}
+                            {getTime(
+                              item.legs[0].segmentDetails[0].origin.dateTime
+                            )}
                           </p>
-                          <p className="text-gray-600">DAC</p>
+                          <p className="text-gray-600">
+                            {item.legs[0].segmentDetails[0].origin.city}
+                          </p>
                         </div>
                         <div className="text-center grid grid-cols-2 gap-1">
                           <div className="border-2 px-2 py-1 rounded-md text-xs ml-2">
@@ -287,22 +306,36 @@ export default function Home() {
                         </div>
                         <div>
                           <p className="text-xl font-semibold">
-                            {lastElementSegmentDetails.destination.dateTime}
+                            {getTime(
+                              lastElementSegmentDetails.destination.dateTime
+                            )}
                           </p>
-                          <p className="text-gray-600">DXB</p>
+                          <p className="text-gray-600">
+                            {lastElementSegmentDetails.destination.city}
+                          </p>
                         </div>
                       </div>
                     </div>
 
                     <div className="md:w-1/4 md:flex justify-center items-center">
                       <div className="text-center">
-                        <p className="text-sm text-gray-600">{item.priceBreakDownWithMarkup.commission_percentage} % Discount</p>
-                       
+                        <p className="text-sm text-gray-600">
+                          {item.priceBreakDownWithMarkup.commission_percentage}%
+                          Discount
+                        </p>
+
                         <p className="text-xl font-bold text-red-600">
-                          BDT {item.priceBreakDownWithMarkup.totalFare.netTotalFareAmount}
+                          BDT
+                          {
+                            item.priceBreakDownWithMarkup.totalFare
+                              .netTotalFareAmount
+                          }
                         </p>
                         <p className="text-gray-600">
-                          BDT <span className="line-through">{item.totalPrice.totalPrice}</span>
+                          BDT
+                          <span className="line-through">
+                            {item.totalPrice.totalPrice}
+                          </span>
                         </p>
 
                         <div className="mt-4">
@@ -360,9 +393,13 @@ export default function Home() {
                         <div className=" border-gray-200 dark:border-gray-700 dark:bg-gray-900">
                           <div className="border-b">
                             <div className="w-1/4 bg-[#0A3D62] text-white text-center p-1">
-                              <span className="text-xs">DAC</span>
+                              <span className="text-xs">
+                                {item.legs[0].segmentDetails[0].origin.city}
+                              </span>
                               <span className="mx-2">✈</span>
-                              <span className="text-xs">DXB</span>
+                              <span className="text-xs">
+                                {lastElementSegmentDetails.destination.city}
+                              </span>
                             </div>
                           </div>
                           {item.legs[0].segmentDetails?.map((item1, idx1) => {
@@ -381,7 +418,10 @@ export default function Home() {
                                 </div>
                                 <div>
                                   <p>{item1.fleet?.operating}</p>
-                                  <p>Aircraft: {item1.fleet?.operatingFlightNumber}</p>
+                                  <p>
+                                    Aircraft:
+                                    {item1.fleet?.operatingFlightNumber}
+                                  </p>
                                 </div>
                                 <div>
                                   <p>{item1.origin.dateTime}</p>
@@ -405,7 +445,13 @@ export default function Home() {
                                   <p>{item1.fleet?.operatingFlightNumber}</p>
                                   <div>
                                     <p>Baggage</p>
-                                    <p>1 Pcs</p>
+                                    <p>
+                                      {
+                                        item.baggageInfo[0]?.details[0]
+                                          ?.pieceCount
+                                      }
+                                      Pcs
+                                    </p>
                                   </div>
                                 </div>
                               </div>
