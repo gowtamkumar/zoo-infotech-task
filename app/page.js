@@ -1,10 +1,13 @@
 "use client";
 import Image from "next/image";
-import { useState, useActionState, useFormStatus } from "react";
-import { FaCheckCircle, FaMailBulk, FaWhatsapp } from "react-icons/fa";
+import { useState, } from "react";
+import { FaCheckCircle, FaWhatsapp } from "react-icons/fa";
 import { FaRegCircleCheck } from "react-icons/fa6";
 import jsonData from "@/public/zoo-flight-search.json";
 import { MdOutlineMail } from "react-icons/md";
+import Footer from "@/components/footer";
+import Header from "@/components/header";
+import Sidebar from "@/components/sidebar";
 
 export default function Home() {
   const [fromValue, setFromvalue] = useState({
@@ -33,14 +36,11 @@ export default function Home() {
     }, 500);
   };
 
-  console.log("working...", jsonData);
-
   return (
     <main className="bg-gray-100 font-sans">
-      <header className="bg-blue-900 text-white p-6 text-center">
-        <h1 className="text-2xl">Flight Search</h1>
-      </header>
+      <Header />
 
+      {/* Flight search section */}
       <div className="container mx-auto mt-6 px-4">
         <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
           <div className="flex mb-6 md:w-1/4  gap-1 ">
@@ -153,78 +153,7 @@ export default function Home() {
 
       <div className="container mx-auto mt-6 px-4">
         <div className="md:flex md:space-x-6">
-          <div className="md:w-1/4 sm:w-1/2">
-            <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
-              <div className="mb-6">
-                <h3 className="font-bold mb-2">Number of Stops</h3>
-                <div>
-                  <input
-                    type="radio"
-                    name="stops"
-                    value="nonstop"
-                    className="mr-2"
-                  />
-                  Non Stop
-                </div>
-                <div>
-                  <input
-                    type="radio"
-                    name="stops"
-                    value="onestop"
-                    className="mr-2"
-                  />
-                  One Stop
-                </div>
-                <div>
-                  <input
-                    type="radio"
-                    name="stops"
-                    value="multistop"
-                    className="mr-2"
-                  />
-                  Multi Stop
-                </div>
-              </div>
-              <div className="mb-6">
-                <h3 className="font-bold mb-2">Cabin Type</h3>
-                <div>
-                  <input type="checkbox" value="economy" className="mr-2" />
-                  Economy
-                </div>
-                <div>
-                  <input
-                    type="checkbox"
-                    value="premiumeconomy"
-                    className="mr-2"
-                  />
-                  Premium Economy
-                </div>
-                <div>
-                  <input type="checkbox" value="business" className="mr-2" />
-                  Business
-                </div>
-                <div>
-                  <input type="checkbox" value="first" className="mr-2" /> First
-                  Class
-                </div>
-              </div>
-              <div>
-                <h3 className="font-bold mb-2">Air Carrier</h3>
-                <div>
-                  <input type="checkbox" value="bangla" className="mr-2" /> Air
-                  Bangla
-                </div>
-                <div>
-                  <input type="checkbox" value="flydubai" className="mr-2" />
-                  FlyDubai
-                </div>
-                <div>
-                  <input type="checkbox" value="emirates" className="mr-2" />
-                  Emirates
-                </div>
-              </div>
-            </div>
-          </div>
+          <Sidebar />
 
           <div className="md:w-3/4 sm:w-1/2">
             {loading && "Loading...."}
@@ -236,9 +165,7 @@ export default function Home() {
                 ];
 
               function getTime(value) {
-                // const dateString = item.legs[0].segmentDetails[0].origin.dateTime;
                 const date = new Date(value);
-
                 const hours = date.getHours();
                 const minutes = date.getMinutes();
                 const seconds = date.getSeconds();
@@ -246,9 +173,7 @@ export default function Home() {
                 // Format the time as a string
                 const timeString = `${hours
                   .toString()
-                  .padStart(2, "0")}:${minutes
-                  .toString()
-                  .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+                  .padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
                 return timeString;
               }
 
@@ -268,7 +193,7 @@ export default function Home() {
                         </div>
                       </div>
 
-                      <div className="flex justify-between items-center mb-4">
+                      <div className="md:flex text-center justify-between items-center mb-4">
                         <div>
                           <Image
                             src="/BS.gif"
@@ -319,20 +244,20 @@ export default function Home() {
 
                     <div className="md:w-1/4 md:flex justify-center items-center">
                       <div className="text-center">
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-red-600">
                           {item.priceBreakDownWithMarkup.commission_percentage}%
                           Discount
                         </p>
 
-                        <p className="text-xl font-bold text-red-600">
-                          BDT
+                        <p className="text-xl text-gray-600 ">
+                          BDT{" "}
                           {
                             item.priceBreakDownWithMarkup.totalFare
                               .netTotalFareAmount
                           }
                         </p>
-                        <p className="text-gray-600">
-                          BDT
+                        <p className="text-red-600">
+                          BDT{" "}
                           <span className="line-through">
                             {item.totalPrice.totalPrice}
                           </span>
@@ -356,7 +281,11 @@ export default function Home() {
                         <button
                           type="button"
                           className=" w-full p-1 font-medium rtl:text-right text-gray-500"
-                          onClick={() => setshow({ idx, open: !show.open })}
+                          onClick={() => {
+                            show.idx === idx
+                              ? setshow({ idx, open: !show.open })
+                              : setshow({ idx, open: true });
+                          }}
                         >
                           <div className="flex items-center justify-between">
                             <div className="flex gap-1">
@@ -394,7 +323,7 @@ export default function Home() {
                           <div className="border-b">
                             <div className="w-1/4 bg-[#0A3D62] text-white text-center p-1">
                               <span className="text-xs">
-                                {item.legs[0].segmentDetails[0].origin.city}
+                                {item?.legs[0].segmentDetails[0].origin.city}
                               </span>
                               <span className="mx-2">✈</span>
                               <span className="text-xs">
@@ -402,10 +331,10 @@ export default function Home() {
                               </span>
                             </div>
                           </div>
-                          {item.legs[0].segmentDetails?.map((item1, idx1) => {
+                          {item?.legs[0]?.segmentDetails?.map((item1, idx1) => {
                             return (
                               <div
-                                className="flex justify-between items-center border-b-2"
+                                className="md:flex md:text-start text-center justify-between items-center border-b-2 p-1"
                                 key={idx1}
                               >
                                 <div>
@@ -443,7 +372,7 @@ export default function Home() {
                                 <div>
                                   <p>{item1.fleet?.operating}</p>
                                   <p>{item1.fleet?.operatingFlightNumber}</p>
-                                  <div>
+                                  <div className="mt-2">
                                     <p>Baggage</p>
                                     <p>
                                       {
@@ -468,12 +397,7 @@ export default function Home() {
         </div>
       </div>
 
-      <footer className="bg-blue-900 text-white p-6 text-center mt-6">
-        <div>
-          Corporate Office | Contact Us | About Company | Important Link
-        </div>
-        <div>Social Media Links</div>
-      </footer>
+      <Footer />
     </main>
   );
 }
